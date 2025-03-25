@@ -68,14 +68,6 @@ model Session {
   expires      DateTime @db.Timestamp(6)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamp(6)
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@id([identifier, token])
 }
