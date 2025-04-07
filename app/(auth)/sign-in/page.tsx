@@ -21,11 +21,11 @@ const SignInPage = async (props: {
     callbackUrl: string;
   }>;
 }) => {
-  const { callbaclUrl } = await props.searchParams;
+  const { callbackUrl } = await props.searchParams;
   const session = await auth();
 
   if (session) {
-    redirect(callbaclUrl || "/");
+    redirect(callbackUrl || "/");
   }
   // If the user is already signed in, redirect to the home page
   return (
