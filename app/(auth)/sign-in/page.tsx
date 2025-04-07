@@ -10,11 +10,24 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import CredentialsSignInForm from "./credentials-signin-form";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign In",
 };
-const SignInPage = () => {
+const SignInPage = async (props: {
+  searchParams: Promise<{
+    callbackUrl: string;
+  }>;
+}) => {
+  const { callbaclUrl } = await props.searchParams;
+  const session = await auth();
+
+  if (session) {
+    redirect(callbaclUrl || "/");
+  }
+  // If the user is already signed in, redirect to the home page
   return (
     <div className="w-full max-w-md mx-auto">
       <Card>
