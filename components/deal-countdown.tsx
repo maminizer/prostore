@@ -78,7 +78,7 @@ const DealCountdown = () => {
         </div>
         <div className='flex justify-center'>
           <Image
-            src='/images/promo.jpg'
+            src='/images/HPG.jpg'
             alt='promotion'
             width={300}
             height={200}
