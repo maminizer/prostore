@@ -19,3 +19,10 @@ module.exports = {
 };
 
 export default nextConfig;
+
+module.exports = {
+  images: {
+    domains: ['utfs.io'], // Add any other domains you're using here
+  },
+  // your other Next.js config options
+};
