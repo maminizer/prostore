@@ -1,33 +1,13 @@
 import ProductCard from '@/components/shared/product/product-card';
 import { Button } from '@/components/ui/button';
+import PriceFilter from '@/components/pricefilter';
+//import SortSelector from '@/components/sortfilter';
+
 import {
   getAllProducts,
   getAllCategories,
 } from '@/lib/actions/product.actions';
 import Link from 'next/link';
-
-const prices = [
-  {
-    name: '$1 to $50',
-    value: '1-50',
-  },
-  {
-    name: '$51 to $100',
-    value: '51-100',
-  },
-  {
-    name: '$101 to $200',
-    value: '101-200',
-  },
-  {
-    name: '$201 to $500',
-    value: '201-500',
-  },
-  {
-    name: '$501 to $1000',
-    value: '501-1000',
-  },
-];
 
 const ratings = [4, 3, 2, 1];
 
@@ -153,30 +133,9 @@ const SearchPage = async (props: {
             ))}
           </ul>
         </div>
-        {/* Price Links */}
-        <div className='text-xl mb-2 mt-8'>Price</div>
-        <div>
-          <ul className='space-y-1'>
-            <li>
-              <Link
-                className={`${price === 'all' && 'font-bold'}`}
-                href={getFilterUrl({ p: 'all' })}
-              >
-                Any
-              </Link>
-            </li>
-            {prices.map((p) => (
-              <li key={p.value}>
-                <Link
-                  className={`${price === p.value && 'font-bold'}`}
-                  href={getFilterUrl({ p: p.value })}
-                >
-                  {p.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+
+        {/* Price Filter - now using client component */}
+        <PriceFilter />
         {/* Rating Links */}
         <div className='text-xl mb-2 mt-8'>Customer Ratings</div>
         <div>
@@ -207,7 +166,7 @@ const SearchPage = async (props: {
           <div className='flex items-center'>
             {q !== 'all' && q !== '' && 'Query: ' + q}
             {category !== 'all' && category !== '' && 'Category: ' + category}
-            {price !== 'all' && ' Price: ' + price}
+            {price !== 'all' && ' Price: $' + price.replace('-', ' to $')}
             {rating !== 'all' && ' Rating: ' + rating + ' stars & up'}
             &nbsp;
             {(q !== 'all' && q !== '') ||
