@@ -14,6 +14,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Charts from './charts';
 import { requireAdmin } from '@/lib/auth-guard';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
@@ -113,9 +114,11 @@ const AdminOverviewPage = async () => {
                     </TableCell>
                     <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
                     <TableCell>
-                      <Link href={`/order/${order.id}`}>
-                        <span className='px-2'>Details</span>
-                      </Link>
+                      <Button asChild size='sm'>
+                        <Link href={`/order/${order.id}`}>
+                          <span className='px-2'>Details</span>
+                        </Link>
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
