@@ -1,4 +1,7 @@
 'use client';
+
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import {
   Select,
   SelectContent,
@@ -6,37 +9,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useRouter } from 'next/navigation';
 
-// Sort options for the dropdown
-const sortOptions = [
+const sortOrders = [
   { value: 'newest', label: 'Newest' },
-  { value: 'lowest', label: 'Price: Low to High' },
-  { value: 'highest', label: 'Price: High to Low' },
-  { value: 'rating', label: 'Rating' },
+  { value: 'lowest', label: 'Lowest Price' },
+  { value: 'highest', label: 'Highest Price' },
+  { value: 'rating', label: 'Customer Rating' },
 ];
 
-interface SortSelectorProps {
-  currentSort: string;
-  getFilterUrl: (params: { s?: string }) => string;
-}
-
-const SortSelector = ({ currentSort, getFilterUrl }: SortSelectorProps) => {
+const SortFilter = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sort = searchParams.get('sort') || 'newest';
 
-  const handleValueChange = (value: string) => {
-    router.push(getFilterUrl({ s: value }));
+  // Handle selection change
+  const handleSortChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', value);
+    router.push(`/search?${params.toString()}`);
   };
 
   return (
-    <div className='flex items-center gap-2'>
+    <div className='flex items-center space-x-2'>
       <span>Sort by</span>
-      <Select defaultValue={currentSort} onValueChange={handleValueChange}>
+      <Select value={sort} onValueChange={handleSortChange}>
         <SelectTrigger className='w-[180px]'>
           <SelectValue placeholder='Sort by' />
         </SelectTrigger>
         <SelectContent>
-          {sortOptions.map((option) => (
+          {sortOrders.map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.label}
             </SelectItem>
@@ -47,4 +48,4 @@ const SortSelector = ({ currentSort, getFilterUrl }: SortSelectorProps) => {
   );
 };
 
-export default SortSelector;
+export default SortFilter;
