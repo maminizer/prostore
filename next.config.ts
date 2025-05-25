@@ -1,31 +1,20 @@
 import type { NextConfig } from 'next';
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  env: {
+    UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
+  },
+  serverExternalPackages: ['pdf2json'], // updated from experimental.serverComponentsExternalPackages
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'utfs.io',
-        port: '',
+        port: '', // Optional, can be removed if not used
       },
     ],
   },
 };
 
-module.exports = {
-  env: {
-    UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
-  },
-};
-
-export default nextConfig;
-
-module.exports = {
-  experimental: {
-    serverComponentsExternalPackages: ['pdf2json'],
-  },
-  images: {
-    domains: ['utfs.io'], // Add any other domains you're using here
-  },
-  // your other Next.js config options
-};
+module.exports = nextConfig;
