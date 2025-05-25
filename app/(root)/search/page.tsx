@@ -146,13 +146,13 @@ const SearchPage = async (props: {
                 Any
               </Link>
             </li>
-            {ratings.map((r) => (
+           {ratings.map((r) => (
               <li key={r}>
                 <Link
                   className={`${rating === r.toString() && 'font-bold'}`}
                   href={getFilterUrl({ r: `${r}` })}
                 >
-                  {`${r} stars & up`}
+                  {`${'⭐'.repeat(r)}`}
                 </Link>
               </li>
             ))}
