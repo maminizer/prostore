@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
@@ -73,6 +74,7 @@ export async function POST(req: NextRequest) {
 
       try {
         const parsedText = await new Promise<string>((resolve, reject) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const pdfParser = new (PDFParser as any)(null, 1);
 
           pdfParser.on('pdfParser_dataError', (errData: any) => {
