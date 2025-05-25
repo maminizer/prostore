@@ -145,3 +145,8 @@ export const insertReviewSchema = z.object({
     .min(1, 'Rating must be at least 1')
     .max(5, 'Rating must be at most 5'),
 });
+
+export const updateProductQuantitySchema = z.object({
+  id: z.string(),
+  stock: z.coerce.number(),
+});

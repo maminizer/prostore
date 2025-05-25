@@ -3,7 +3,11 @@ import { prisma } from '@/db/prisma';
 import { convertToPlainObject, formatError } from '../utils';
 import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from '../constants';
 import { revalidatePath } from 'next/cache';
-import { insertProductSchema, updateProductSchema } from '../validators';
+import {
+  insertProductSchema,
+  updateProductSchema,
+  updateProductQuantitySchema,
+} from '../validators';
 import { z } from 'zod';
 import { Prisma } from '@prisma/client';
 
@@ -97,10 +101,10 @@ export async function getAllProducts({
       sort === 'lowest'
         ? { price: 'asc' }
         : sort === 'highest'
-        ? { price: 'desc' }
-        : sort === 'rating'
-        ? { rating: 'desc' }
-        : { createdAt: 'desc' },
+          ? { price: 'desc' }
+          : sort === 'rating'
+            ? { rating: 'desc' }
+            : { createdAt: 'desc' },
     skip: (page - 1) * limit,
     take: limit,
   });
@@ -197,4 +201,139 @@ export async function getFeaturedProducts() {
   });
 
   return convertToPlainObject(data);
+}
+
+// update the product stock  from PDF parsing
+async function findProductBySimilarName(productName: string) {
+  // First try exact match
+  let product = await prisma.product.findFirst({
+    where: {
+      name: {
+        equals: productName,
+        mode: 'insensitive',
+      },
+    },
+  });
+
+  if (product) return product;
+
+  // If no exact match, try partial match
+  product = await prisma.product.findFirst({
+    where: {
+      name: {
+        contains: productName,
+        mode: 'insensitive',
+      },
+    },
+  });
+
+  if (product) return product;
+
+  // Try matching individual words from the product name
+  const words = productName.split(' ').filter((word) => word.length > 2);
+  for (const word of words) {
+    product = await prisma.product.findFirst({
+      where: {
+        name: {
+          contains: word,
+          mode: 'insensitive',
+        },
+      },
+    });
+    if (product) return product;
+  }
+
+  return null;
+}
+
+export async function updateProductQuantities(
+  extractedProducts: Array<{ productName: string; quantity: number }>
+) {
+  const results = [];
+
+  try {
+    for (const extractedProduct of extractedProducts) {
+      try {
+        // 1. Find the product with name similar to the product in the returned object
+        const existingProduct = await findProductBySimilarName(
+          extractedProduct.productName
+        );
+
+        if (!existingProduct) {
+          results.push({
+            productName: extractedProduct.productName,
+            success: false,
+            message: `Product '${extractedProduct.productName}' not found in database`,
+          });
+          continue;
+        }
+
+        // 2. Get the current quantity (stock)
+        const currentStock = existingProduct.stock || 0;
+
+        // 3. Update the quantity to be the sum of the existing and the new one
+        const newStock = currentStock + extractedProduct.quantity;
+
+        // Validate the update data
+        const updateData = updateProductQuantitySchema.parse({
+          id: existingProduct.id,
+          stock: newStock,
+        });
+
+        // Update the product
+        await prisma.product.update({
+          where: { id: updateData.id },
+          data: { stock: updateData.stock },
+        });
+
+        results.push({
+          productName: extractedProduct.productName,
+          matchedProduct: existingProduct.name,
+          previousStock: currentStock,
+          addedQuantity: extractedProduct.quantity,
+          newStock: newStock,
+          success: true,
+          message: `Successfully updated '${existingProduct.name}' stock from ${currentStock} to ${newStock}`,
+        });
+      } catch (error) {
+        results.push({
+          productName: extractedProduct.productName,
+          success: false,
+          message: `Error updating product: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        });
+      }
+    }
+
+    // Revalidate the products page after all updates
+    revalidatePath('/admin/products');
+
+    const successCount = results.filter((r) => r.success).length;
+    const totalCount = results.length;
+
+    return {
+      success: successCount > 0,
+      message: `Updated ${successCount} out of ${totalCount} products successfully`,
+      results: results,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: `Failed to update product quantities: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      results: results,
+    };
+  }
+}
+
+// Function to be called from your invoice processing endpoint
+export async function processInvoiceAndUpdateStock(
+  extractedProducts: Array<{ productName: string; quantity: number }>
+) {
+  if (!extractedProducts || extractedProducts.length === 0) {
+    return {
+      success: false,
+      message: 'No products found in invoice',
+    };
+  }
+
+  return await updateProductQuantities(extractedProducts);
 }

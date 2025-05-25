@@ -21,6 +21,9 @@ module.exports = {
 export default nextConfig;
 
 module.exports = {
+  experimental: {
+    serverComponentsExternalPackages: ['pdf2json'],
+  },
   images: {
     domains: ['utfs.io'], // Add any other domains you're using here
   },

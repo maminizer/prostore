@@ -13,6 +13,7 @@ import {
 import Pagination from '@/components/shared/pagination';
 import DeleteDialog from '@/components/shared/delete-dialog';
 import { requireAdmin } from '@/lib/auth-guard';
+import FileUpload from '@/components/file-upload';
 
 const AdminProductsPage = async (props: {
   searchParams: Promise<{
@@ -90,6 +91,9 @@ const AdminProductsPage = async (props: {
       {products.totalPages > 1 && (
         <Pagination page={page} totalPages={products.totalPages} />
       )}
+      <div className='w-96'>
+        <FileUpload />
+      </div>
     </div>
   );
 };
