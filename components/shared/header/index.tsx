@@ -4,6 +4,7 @@ import { APP_NAME } from '@/lib/constants';
 import Menu from './menu';
 import CategoryDrawer from './category-drawer';
 import Search from './search';
+import LanguageSelector from './language-selector';
 
 const Header = () => {
   return (
@@ -27,7 +28,10 @@ const Header = () => {
         <div className='hidden md:block'>
           <Search />
         </div>
-        <Menu />
+        <div className='flex items-center gap-4'>
+          <LanguageSelector />
+          <Menu />
+        </div>
       </div>
     </header>
   );
