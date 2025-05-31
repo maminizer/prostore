@@ -7,20 +7,20 @@ export const translations = {
     search: 'Search products...',
     menu: 'Menu',
     categories: 'Categories',
-    
+
     // Homepage sections
     newestArrivals: 'Newest Arrivals',
     featuredProducts: 'Featured Products',
     viewAllProducts: 'View All Products',
     dealCountdown: 'Special Deal',
-    
+
     // Common actions
     addToCart: 'Add to Cart',
     buy: 'Buy Now',
     login: 'Sign In',
     register: 'Register',
     logout: 'Logout',
-    
+
     // Product related
     product: 'Product',
     products: 'Products',
@@ -28,7 +28,7 @@ export const translations = {
     description: 'Description',
     inStock: 'In Stock',
     outOfStock: 'Out of Stock',
-    
+
     // General
     welcome: 'Welcome',
     loading: 'Loading...',
@@ -41,20 +41,20 @@ export const translations = {
     search: 'Rechercher des produits...',
     menu: 'Menu',
     categories: 'Catégories',
-    
+
     // Homepage sections
     newestArrivals: 'Nouveautés',
     featuredProducts: 'Produits Vedettes',
     viewAllProducts: 'Voir Tous les Produits',
     dealCountdown: 'Offre Spéciale',
-    
+
     // Common actions
     addToCart: 'Ajouter au Panier',
     buy: 'Acheter Maintenant',
     login: 'Connexion',
-    register: 'S\'inscrire',
+    register: "S'inscrire",
     logout: 'Déconnexion',
-    
+
     // Product related
     product: 'Produit',
     products: 'Produits',
@@ -62,7 +62,7 @@ export const translations = {
     description: 'Description',
     inStock: 'En Stock',
     outOfStock: 'Rupture de Stock',
-    
+
     // General
     welcome: 'Bienvenue',
     loading: 'Chargement...',
@@ -75,20 +75,20 @@ export const translations = {
     search: 'Produkte suchen...',
     menu: 'Menü',
     categories: 'Kategorien',
-    
+
     // Homepage sections
     newestArrivals: 'Neueste Ankünfte',
     featuredProducts: 'Empfohlene Produkte',
     viewAllProducts: 'Alle Produkte Anzeigen',
     dealCountdown: 'Sonderangebot',
-    
+
     // Common actions
     addToCart: 'In den Warenkorb',
     buy: 'Jetzt Kaufen',
     login: 'Anmelden',
     register: 'Registrieren',
     logout: 'Abmelden',
-    
+
     // Product related
     product: 'Produkt',
     products: 'Produkte',
@@ -96,7 +96,7 @@ export const translations = {
     description: 'Beschreibung',
     inStock: 'Auf Lager',
     outOfStock: 'Nicht Verfügbar',
-    
+
     // General
     welcome: 'Willkommen',
     loading: 'Laden...',

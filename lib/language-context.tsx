@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type Language = 'en' | 'es' | 'fr' | 'de' | 'ar'; // Add your supported languages
+export type Language = 'en' | 'fr' | 'de'; // Add your supported languages
 
 interface LanguageContextType {
   currentLanguage: Language;
@@ -10,7 +10,9 @@ interface LanguageContextType {
   languages: { code: Language; name: string; flag: string }[];
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined
+);
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
@@ -20,7 +22,9 @@ export const useLanguage = () => {
   return context;
 };
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
 
   const languages = [
@@ -31,8 +35,13 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     // Load saved language from localStorage
-    const savedLanguage = localStorage.getItem('preferred-language') as Language;
-    if (savedLanguage && languages.some(lang => lang.code === savedLanguage)) {
+    const savedLanguage = localStorage.getItem(
+      'preferred-language'
+    ) as Language;
+    if (
+      savedLanguage &&
+      languages.some((lang) => lang.code === savedLanguage)
+    ) {
       setCurrentLanguage(savedLanguage);
     }
   }, []);
@@ -45,7 +54,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   return (
-    <LanguageContext.Provider value={{ currentLanguage, setLanguage, languages }}>
+    <LanguageContext.Provider
+      value={{ currentLanguage, setLanguage, languages }}
+    >
       {children}
     </LanguageContext.Provider>
   );
