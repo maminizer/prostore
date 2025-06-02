@@ -18,6 +18,8 @@ import { PAGE_SIZE } from '../constants';
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
 import { getMyCart } from './cart.actions';
+import { generateVerificationToken } from '../token';
+import { sendVerificationEmail } from '../mail';
 
 // Sign in the user with credentials
 export async function signInWithCredentials(
@@ -64,7 +66,7 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
       confirmPassword: formData.get('confirmPassword'),
     });
 
-    const plainPassword = user.password;
+    // const plainPassword = user.password;
 
     user.password = await hash(user.password);
 
@@ -76,12 +78,15 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
       },
     });
 
-    await signIn('credentials', {
-      email: user.email,
-      password: plainPassword,
-    });
+    // await signIn('credentials', {
+    //   email: user.email,
+    //   password: plainPassword,
+    // });
 
-    return { success: true, message: 'User registered successfully' };
+    const verificationToken = await generateVerificationToken(user.email);
+    await sendVerificationEmail(user.email, verificationToken.token);
+
+    return { success: true, message: 'Email verification was sent' };
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
@@ -98,6 +103,22 @@ export async function getUserById(userId: string) {
   if (!user) throw new Error('User not found');
   return user;
 }
+
+// Get user by email
+export const getUserByEmail = async (email: string) => {
+  try {
+    const lowerCaseEmail = email.toLowerCase();
+    const user = await prisma.user.findUnique({
+      where: {
+        email: lowerCaseEmail,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    return null;
+  }
+};
 
 // Update the user's address
 export async function updateUserAddress(data: ShippingAddress) {

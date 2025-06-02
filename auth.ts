@@ -6,8 +6,10 @@ import { prisma } from '@/db/prisma';
 import { cookies } from 'next/headers';
 import { compare } from './lib/encrypt';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import EmailProvider from 'next-auth/providers/nodemailer';
 
 export const config = {
+  handlers: ['GET', 'POST'],
   pages: {
     signIn: '/sign-in',
     error: '/sign-in',
@@ -18,6 +20,17 @@ export const config = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
+    EmailProvider({
+      server: {
+        host: process.env.NEXT_PUBLIC_SENDER_HOST,
+        port: process.env.NEXT_PUBLIC_EMAIL_SERVER_PORT,
+        auth: {
+          user: process.env.NEXT_PUBLIC_EMAIL_SERVER_USER,
+          pass: process.env.NEXT_PUBLIC_EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: process.env.NEXT_PUBLIC_EMAIL_FROM,
+    }),
     CredentialsProvider({
       credentials: {
         email: { type: 'email' },
