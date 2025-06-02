@@ -115,6 +115,7 @@ export const getUserByEmail = async (email: string) => {
     });
 
     return user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return null;
   }

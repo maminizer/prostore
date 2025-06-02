@@ -27,6 +27,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const languages = [
     { code: 'en' as Language, name: 'English', flag: '🇺🇸' },
     { code: 'fr' as Language, name: 'Français', flag: '🇫🇷' },
@@ -44,7 +45,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
     ) {
       setCurrentLanguage(savedLanguage);
     }
-  }, []);
+  }, [languages]);
 
   const setLanguage = (language: Language) => {
     setCurrentLanguage(language);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState, useCallback, SetStateAction } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   Card,
   CardContent,
@@ -32,19 +32,14 @@ const VerifyEmailForm = () => {
     }
 
     newVerification(token)
-      .then(
-        (data: {
-          success: SetStateAction<string | undefined>;
-          error: SetStateAction<string | undefined>;
-        }) => {
-          if (data.success) {
-            setSuccess(data.success);
-          }
-          if (data.error) {
-            setError(data.error);
-          }
+      .then((data) => {
+        if (data.success) {
+          setSuccess(data.success);
         }
-      )
+        if (data.error) {
+          setError(data.error);
+        }
+      })
       .catch((error) => {
         console.error(error);
         setError('An unexpected error occurred');
@@ -53,7 +48,7 @@ const VerifyEmailForm = () => {
 
   useEffect(() => {
     onSubmit();
-  }, []);
+  }, [onSubmit]);
 
   return (
     <Card className='w-full max-w-md mx-auto'>
