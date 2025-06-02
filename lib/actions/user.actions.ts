@@ -32,6 +32,14 @@ export async function signInWithCredentials(
       password: formData.get('password'),
     });
 
+    const existingUser = await getUserByEmail(user.email);
+    if (!existingUser?.emailVerified) {
+      return {
+        success: false,
+        message: 'Please verify your email before signing in',
+      };
+    }
+
     await signIn('credentials', user);
 
     return { success: true, message: 'Signed in successfully' };

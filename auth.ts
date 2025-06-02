@@ -47,7 +47,7 @@ export const config = {
         });
 
         // Check if user exists and if the password matches
-        if (user && user.password) {
+        if (user && user.password && user.emailVerified) {
           const isMatch = await compare(
             credentials.password as string,
             user.password
