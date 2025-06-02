@@ -146,7 +146,7 @@ const SearchPage = async (props: {
                 Any
               </Link>
             </li>
-           {ratings.map((r) => (
+            {ratings.map((r) => (
               <li key={r}>
                 <Link
                   className={`${rating === r.toString() && 'font-bold'}`}
@@ -164,7 +164,7 @@ const SearchPage = async (props: {
           <div className='flex items-center'>
             {q !== 'all' && q !== '' && 'Query: ' + q}
             {category !== 'all' && category !== '' && 'Category: ' + category}
-            {price !== 'all' && ' Price: $' + price.replace('-', ' to $')}
+            {price !== 'all' && ' Price: €' + price.replace('-', ' to €')}
             {rating !== 'all' && ' Rating: ' + rating + ' stars & up'}
             &nbsp;
             {(q !== 'all' && q !== '') ||
