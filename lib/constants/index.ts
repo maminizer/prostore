@@ -20,11 +20,11 @@ export const signUpDefaultValues = {
 };
 
 export const shippingAddressDefaultValues = {
-  fullName: '',
-  streetAddress: '',
-  city: '',
-  postalCode: '',
-  country: '',
+  fullName: 'Hiba Hachani',
+  streetAddress: '4 Rue teichstrase',
+  city: 'Erfurt',
+  postalCode: '99086',
+  country: 'Germany',
 };
 
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
